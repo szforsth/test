@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <net/if.h>				//struct ifreq
 #include <sys/ioctl.h>			//ioctl、SIOCGIFADDR
@@ -11,11 +12,6 @@
 
 void *send_arp_ask(void *arg);
 
-void test()
-{
-	printf("ok\n");
-}
-
 int arp(int argc,char *argv[])
 {
 	//1.创建通信用的原始套接字
@@ -23,7 +19,7 @@ int arp(int argc,char *argv[])
 	
 	//2.创建发送线程
 	pthread_t tid;
-	pthread_create(&tid, NULL, (void *)send_arp_ask, (void *)sock_raw_fd);
+	pthread_create(&tid, NULL, (void *)send_arp_ask, (void *)(long)sock_raw_fd);
 	
 	while(1)
 	{
@@ -48,7 +44,7 @@ int arp(int argc,char *argv[])
 void *send_arp_ask(void *arg)
 {
 	int i = 0;
-	int sock_raw_fd = (int)arg;
+	int sock_raw_fd = (int)(long)arg;
 	//1.根据各种协议首部格式构建发送数据报
 	unsigned char send_msg[1024] = {
 		//--------------组MAC--------14------
@@ -102,7 +98,7 @@ void *send_arp_ask(void *arg)
 	{
 		int i = 0;
 		int num[4] = {0};
-		unsigned char input_buf[1024] = "";
+		char input_buf[1024] = "";
 		
 		//6.获取所要扫描的网段（172.20.226.0）
 		printf("input_dst_Network:172.20.226.0\n");
@@ -126,5 +122,5 @@ void *send_arp_ask(void *arg)
 		}
 		sleep(1);
 	}
-	return;
+	return 0;
 }

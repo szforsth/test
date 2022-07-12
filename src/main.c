@@ -3,7 +3,6 @@
 
 int main(int argc, char *argv[])
 {
-	test();
 	arp(argc, argv);
 	return 0;
 }

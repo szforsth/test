@@ -1,12 +1,14 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-PROJECT(netool)
+set (PROJECT_NAME "netool")
+PROJECT(${PROJECT_NAME})
 
 set(CMAKE_BUILD_TYPE "Debug")
-set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
-set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+#set(CMAKE_BUILD_TYPE "Release")
+set(CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} -O0 -Wall -g")
+set(CMAKE_C_FLAGS_RELEASE "$ENV{CFLAGS} -O3 -Wall")
 
 AUX_SOURCE_DIRECTORY(${PROJECT_SOURCE_DIR}/src DIR_MAIN_SRCS)
 AUX_SOURCE_DIRECTORY(${PROJECT_SOURCE_DIR}/src/arp-tools DIR_ARP_SRCS)
-add_executable(netool ${DIR_MAIN_SRCS} ${DIR_ARP_SRCS})
-target_link_libraries(netool -lpthread)
+add_executable(${PROJECT_NAME} ${DIR_MAIN_SRCS} ${DIR_ARP_SRCS})
+target_link_libraries(${PROJECT_NAME} -lpthread)
