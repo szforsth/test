@@ -2,4 +2,6 @@
 #define NETOOL_H_
 
 
+int parse_config();
+
 #endif
