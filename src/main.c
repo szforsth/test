@@ -1,9 +1,12 @@
 #include <stdio.h>
-#include "arp-tools/arp.h"
+#include "netool.h"
+
+CMD_OPT opt;
 
 int main(int argc, char *argv[])
 {
-	test();
-	arp(argc, argv);
+	parse_options(argc, argv, &opt);
+	while(0)
+		DoCmd(argc, argv);
 	return 0;
 }

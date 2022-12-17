@@ -11,11 +11,6 @@
 
 void *send_arp_ask(void *arg);
 
-void test()
-{
-	printf("ok\n");
-}
-
 int arp(int argc,char *argv[])
 {
 	//1.创建通信用的原始套接字
