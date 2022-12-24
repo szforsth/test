@@ -24,7 +24,7 @@ void GetCmd(void)
 	const char s[2]=" ";
 	char *tmp;
 	opt.argc=0;
-	log_mesg(LOG_ERROR,0,1,0,"Enter a command:\r\n*");	
+	log_mesg(LOG_ERROR,0,1,0,"\nEnter a command:\r\n*");	
 	fgets(opt.cmd,sizeof(opt.cmd)-1,stdin);
 	opt.cmd[strlen(opt.cmd)-1]='\0';
 	log_mesg(LOG_DEBUG,0,1,0,"cmd:[%s]\n",opt.cmd);
@@ -50,17 +50,23 @@ int DoCmd()
 	}
 	else
 	{
-		for(i=0; i<cmdsize && !found; i++)
+		if(strcmp(opt.argv[0], "quit") == 0)
+			opt.cmd_run=0;
+		else
 		{
-			if(strcmp(opt.argv[0], commands[i].key) == 0)
+			for(i=0; i<cmdsize && !found; i++)
 			{
-				result = (*commands[i].func)();
-				found = 1;	
+				if(strcmp(opt.argv[0], commands[i].key) == 0)
+				{
+					result = (*commands[i].func)();
+					found = 1;
+					break;
+				}
 			}
-		}
-		if(!found)
-		{
-			log_mesg(LOG_ERROR,0,1,0,"%s is an invalid command.\n", opt.argv[0]);
+			if(!found)
+			{
+				log_mesg(LOG_ERROR,0,1,0,"%s is an invalid command.\n", opt.argv[0]);
+			}
 		}
 	}
 	return result;
@@ -69,6 +75,7 @@ int DoCmd()
 int help_cmd()
 {
 	int i;
+	int found=0;
 	log_mesg(LOG_ERROR,0,1,0,"  Command       Description\n  =======       ===========\n");
 	for(i=0;i<cmdsize;i++)
 	{
@@ -76,6 +83,7 @@ int help_cmd()
 		{
 			if(strcmp(opt.argv[1],commands[i].key)==0)
 			{
+				found=1;
 				log_mesg(LOG_ERROR,0,1,0,"  %-13s %s\n\nArguments:\n\t%s\n",commands[i].key,commands[i].help,commands[i].usage);
 				break;
 			}
@@ -85,6 +93,8 @@ int help_cmd()
 			log_mesg(LOG_ERROR,0,1,0,"  %-13s %s\n",commands[i].key,commands[i].help);
 		}
 	}
+	if(opt.argc == 2 && found == 0)
+		log_mesg(LOG_ERROR,0,1,0,"\nCan't find %s command.\n",opt.argv[1]);
 	return 0;
 }
 
