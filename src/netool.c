@@ -2,6 +2,7 @@
 
 FILE* msg = NULL;
 static int help_cmd();
+extern int arp(int argc, char *argv[]);
 
 struct cmdstruct {
 	const char *key;                             /* command */
@@ -12,8 +13,8 @@ struct cmdstruct {
 
 static struct cmdstruct commands[] = {
 	{ "help", help_cmd, "Print help on specific command", "add other command to show detail usage\n"},
-	{ "test1", help_cmd, "Print tset1 on specific command", "test1 other command to show detail usage\n"},
-	{ "test2", help_cmd, "Print test2 on specific command", "test2 other command to show detail usage\n"}
+	{ "arp", arp, "run arp fun", "get ip and mac on specific network segment\n"},
+	{ "test", help_cmd, "Print test on specific command", "test other command to show detail usage\n"}
 };
 
 #define cmdsize ((int)(sizeof(commands)/sizeof(struct cmdstruct)))
