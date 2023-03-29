@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 	{
 		GetCmd();
 		DoCmd();
+		ClearCmd();
 	}
 	close_log();
 	return 0;

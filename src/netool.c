@@ -1,12 +1,13 @@
 #include "netool.h"
 
 FILE* msg = NULL;
-static int help_cmd();
+static int help_cmd(int argc, char *argv[]);
 extern int arp(int argc, char *argv[]);
+extern int test(int argc, char *argv[]);
 
 struct cmdstruct {
 	const char *key;                             /* command */
-	int (*func)(void); /* handler */
+	int (*func)(int argc, char *argv[]); /* handler */
 	const char *help;            /* main purpose */
 	const char *usage;           /* all arguments to build usage */
 };
@@ -14,7 +15,7 @@ struct cmdstruct {
 static struct cmdstruct commands[] = {
 	{ "help", help_cmd, "Print help on specific command", "add other command to show detail usage\n"},
 	{ "arp", arp, "run arp fun", "get ip and mac on specific network segment\n"},
-	{ "test", help_cmd, "Print test on specific command", "test other command to show detail usage\n"}
+	{ "test", test, "run tmp function", "test some tmp function in this function\n"}
 };
 
 #define cmdsize ((int)(sizeof(commands)/sizeof(struct cmdstruct)))
@@ -33,7 +34,9 @@ void GetCmd(void)
 	tmp = strtok(buf, s);
 	while(tmp != NULL)
 	{
-		strcpy(opt.argv[opt.argc],tmp);
+		opt.argv[opt.argc] = (char *)malloc(strlen(tmp));
+		strcpy(opt.argv[opt.argc], tmp);
+		//opt.argv[opt.argc] = tmp;
 		opt.argc++;
 		tmp = strtok(NULL, s);
 	}
@@ -59,7 +62,7 @@ int DoCmd()
 			{
 				if(strcmp(opt.argv[0], commands[i].key) == 0)
 				{
-					result = (*commands[i].func)();
+					result = (*commands[i].func)(opt.argc,opt.argv);
 					found = 1;
 					break;
 				}
@@ -73,7 +76,13 @@ int DoCmd()
 	return result;
 }
 
-int help_cmd()
+void ClearCmd()
+{
+	while(opt.argc--)
+		free(opt.argv[opt.argc]);
+}
+
+int help_cmd(int argc, char *argv[])
 {
 	int i;
 	int found=0;

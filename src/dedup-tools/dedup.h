@@ -5,5 +5,5 @@ int uploadFile(char *path);
 int downloadFile(char *path);
 int deleteFile(char *path);
 
-void test();
+void test1();
 #endif

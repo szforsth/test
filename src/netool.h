@@ -21,7 +21,7 @@ typedef struct cmd_opt
 	int cmd_run;
 	char cmd[MAX_ARGLEN];
 	int argc;
-	char argv[MAX_ARGS][MAX_ARGLEN];
+	char *argv[];
 }CMD_OPT;
 CMD_OPT opt;
 
@@ -29,6 +29,7 @@ void parse_options(int argc, char **argv, CMD_OPT* opt);
 
 int DoCmd(void);
 void GetCmd(void);
+void ClearCmd(void);
 
 int parse_config();
 void open_log(char* source);
