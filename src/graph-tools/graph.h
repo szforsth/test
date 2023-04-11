@@ -7,57 +7,57 @@ typedef int edgeInfo;
 typedef int vertexType;
 
 //adjacent list
-typedef struct aedge{
+struct aedge{
 	int avertex;
 	struct aedge *next;
 	edgeInfo info;
-}AEDGE;
+};
 
-typedef struct anode{
+struct anode{
 	vertexType data;
-	AEDGE *first;	
-}ANODE;
+	struct aedge *first;	
+};
 
-typedef struct agraph{
-	ANODE Alist[MAX_VERTEX_NUM];
+struct agraph{
+	struct anode Alist[MAX_VERTEX_NUM];
 	int  vexnum, edgenum;
-}AGRAPH;
+};
 
 //orthogonal list
 
-typedef struct oarc{
+struct oarc{
 	int headvex,tailvex;
 	struct oarc *hlink, *tlink;
-}
+};
 
-typedef struct onode{
+struct onode{
 	vertexType data;
-	OARC *firstin, *firstout;
-}ONODE;
+	struct oarc *firstin, *firstout;
+};
 
-typedef struct ograph{
-	ONODE Olist[MAX_VERTEX_NUM];
+struct ograph{
+	struct onode Olist[MAX_VERTEX_NUM];
 	int vexnum,arcnum;
-}
+};
 
 //adjacency multiple list
 
 
-typedef struct amedge{
+struct amedge{
 	int mark;
 	int ivex, jvex;
 	struct amedge *ilink, *jlink;
 	edgeInfo info;
-}AMEDGE;
+};
 
-typedef struct amnode{
+struct amnode{
 	vertexType data;
-	AMEDGE *first;	
-}AMNODE;
+	struct amedge *first;	
+};
 
-typedef struct amgraph{
-	AMNODE AMlist[MAX_VERTEX_NUM];
+struct amgraph{
+	struct amnode AMlist[MAX_VERTEX_NUM];
 	int  vexnum, edgenum;
-}AMGRAPH;
+};
 
 #endif
