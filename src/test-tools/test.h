@@ -3,6 +3,7 @@
 
 #include "../netool.h"
 #include "time.h"
+#include "unistd.h"
 
 int test(int argc, char *argv[]);
 

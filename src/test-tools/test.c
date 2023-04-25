@@ -2,6 +2,13 @@
 #include "test.h"
 
 #define MAX_LEN 10
+#define MAX_SORT 4
+
+void bubble_sort(int *p, int left, int right);
+void insert_sort(int *p, int left, int right);
+void quick_sort(int *p, int left, int right);
+void select_sort(int *p, int left, int right);
+void (*sort[MAX_SORT])(int *p, int left, int right) = {bubble_sort,insert_sort,quick_sort,select_sort};
 
 void print_args(int argc, char *argv[])
 {
@@ -30,7 +37,29 @@ void print_rand(int *p)
 	 printf("\n");
 }
 
-void sort_1(int *p)
+void quick_sort(int *p, int left, int right)
+{
+	if(left >= right)
+		return;
+	int i=left,j=right;
+	int key = p[i];
+	while(i<j)
+	{
+		while(i<j && p[j]>key)
+			j--;
+		if(i<j)
+			p[i++] = p[j];
+		while(i<j && p[i]<key)
+			i++;
+		if(i<j)
+			p[j--] = p[i];
+	}
+	p[i] = key;
+	quick_sort(p, left, i-1);
+	quick_sort(p, j+1, right);
+}
+
+void bubble_sort(int *p, int left, int right)
 {
 	int i,j;
 	for(i=0;i<MAX_LEN;i++)
@@ -48,7 +77,27 @@ void sort_1(int *p)
 	
 }
 
-void sort_2(int *p)
+void select_sort(int *p, int left, int right)
+{
+	int i,j;
+	for(i=0;i<MAX_LEN-1;i++)
+	{
+		int min = i;
+		for(j=i+1;j<MAX_LEN;j++)
+		{
+			if(p[min] > p[j])
+				min = j;
+		}
+		if(min != i)
+		{
+			int tmp = p[i];
+			p[i] = p[min];
+			p[min] = tmp;
+		}
+	}
+}
+
+void insert_sort(int *p, int left, int right)
 {
 	int i,j,key;
 	for(i=1;i<MAX_LEN;i++)
@@ -70,13 +119,14 @@ int test(int argc, char *argv[])
 	print_args(argc, argv);
 	srand(time(NULL));
 	int arr[MAX_LEN] = {0};
-	init_rand(arr);
-	print_rand(arr);
-	sort_1(arr);
-	print_rand(arr);
-	init_rand(arr);
-	print_rand(arr);
-	sort_2(arr);
-	print_rand(arr);
+	int i;
+	for(i=0;i<MAX_SORT;i++)
+	{
+		init_rand(arr);
+		print_rand(arr);
+		sort[i](arr,0,MAX_LEN-1);
+		print_rand(arr);
+		printf("======================================\n");
+	}
 	return 0;
 }
